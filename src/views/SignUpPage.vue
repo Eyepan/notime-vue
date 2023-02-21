@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import router from '@/router';
+import router from '@/router/router';
 import { useAppStore } from '@/stores/appStore';
 import axios from 'axios';
 import { storeToRefs } from 'pinia';
@@ -11,9 +11,6 @@ const store = useAppStore()
 const { userId, userName } = storeToRefs(store);
 
 
-if (userId.value != '') {
-    router.replace('/home')
-}
 
 
 function handleSubmit() {
