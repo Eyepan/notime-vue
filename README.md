@@ -20,9 +20,23 @@ Notime is out [here](https://eyepan.github.io/notime-vue) if you want to try it 
 ```BASH
 mkdir backend 
 cd backend 
-https://github.com/Eyepan/notime-flask-backend 
+git clone https://github.com/Eyepan/notime-flask-backend 
+cd notime-flask-backend
+python -m venv venv
+```
+Windows: 			
+```
+venv\Scripts\activate.bat
+```
+POSIX/Unix/MacOS:	
+```BASH
+source venv/bin/activate
 ```
 
+and finally install requirements
+```
+pip install -r requirements.txt
+```
 2. Clone the front-end repository to it's own folder (preferably)
 ```BASH
 cd ../    # to get to project root
