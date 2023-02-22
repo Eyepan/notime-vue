@@ -28,7 +28,7 @@ https://github.com/Eyepan/notime-flask-backend
 cd ../    # to get to project root
 mkdir frontend
 cd frontend 
-git clone https://eyepan.github.io/notime-vue
+git clone https://github.com/Eyepan/notime-vue
 ```
 
 
