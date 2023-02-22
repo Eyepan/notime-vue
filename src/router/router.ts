@@ -4,6 +4,8 @@ import SignInPage from "@/views/SignInPage.vue";
 import EditNotebook from "@/views/EditNotebook.vue";
 import SignUpPage from "@/views/SignUpPage.vue";
 import NotFound from "@/views/NotFound.vue";
+import { useAppStore } from "@/stores/appStore";
+import { storeToRefs } from "pinia";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,13 +37,13 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to, from) => {
-//   const store = useAppStore();
-//   const { userId } = storeToRefs(store);
-//   console.log(userId.value);
-//   if (to.meta.requiresAuth && userId.value == "") {
-//     router.replace("/");
-//   }
-// });
+router.beforeEach(async (to) => {
+  const store = useAppStore();
+  const { userId } = storeToRefs(store);
+  console.log(userId.value);
+  if (to.meta.requiresAuth && userId.value == "") {
+    router.replace("/");
+  }
+});
 
 export default router;

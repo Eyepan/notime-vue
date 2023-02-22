@@ -5,12 +5,12 @@ import router from "./router/router";
 import { useAppStore } from "./stores/appStore";
 const store = useAppStore();
 const { userId } = storeToRefs(store);
-router.beforeEach((to, from) => {
-  console.log(userId.value);
-  if (to.meta.requiresAuth && userId.value == "") {
-    router.replace("/");
-  }
-});
+// router.beforeEach(async (to) => {
+//   console.log(userId.value);
+//   if (to.meta.requiresAuth && userId.value == "") {
+//     router.replace("/");
+//   }
+// });
 </script>
 
 <template>
