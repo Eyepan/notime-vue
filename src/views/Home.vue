@@ -3,26 +3,36 @@ import { ref, onMounted } from "vue";
 import { useAppStore } from "@/stores/appStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
+import router from "@/router/router";
+import type Notebook from "@/models/notebook.model";
 
 const store = useAppStore();
-const { userId, userName } = storeToRefs(store);
-interface Notebook {
-    id: string;
-    title: string;
-}
+const { userId, userName, currentNotebookID } = storeToRefs(store);
+
 let index = 1;
 let notebooks = ref<Notebook[]>([]);
 let loading = ref(false);
 
+
 // fetch all notebooks
 onMounted(() => {
+    if (userId.value == '') {
+        router.replace('/')
+    } else {
+        router.replace('/home')
+    }
     axios
         .get(import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks")
         .then(function (response) {
             notebooks.value = response.data["notebooks"];
         });
+    index = notebooks.value.length;
 });
 async function createNewNotebook() {
+    if (notebooks.value.length == 0) {
+        index = 1;
+    }
+    console.log(notebooks.value)
     loading.value = true;
     await axios
         .post(import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks", { title: "New Notebook " + index++ })
@@ -67,17 +77,24 @@ async function deleteNotebook(notebookID: string) {
         });
     loading.value = false;
 }
+
+function logout() {
+    userId.value = '';
+    userName.value = '';
+    router.replace('/')
+}
 </script>
 
 <template>
-    <main class="bg-gray-50 dark:bg-gray-900 w-screen h-screen px-6 py-8">
+    <main class="bg-gray-50 dark:bg-gray-900 w-screen h-screen px-6 py-8 text-gray-900 dark:text-white">
         <div class="flex justify-between">
-            <p class="mb-6 text-3xl font-semibold text-gray-900 dark:text-white">
-                Hi {{ userName }}!
-            </p>
+            <div class="flex flex-row items-center">
+                <p class=" mb-6 text-3xl font-semibold ">Hi {{ userName }}!</p>
+                <a @click="logout()" class="ml-4 font-semibold text-gray-900 dark:text-gray-500 cursor-pointer">Logout</a>
+            </div>
 
             <div v-if="loading" role="status">
-                <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                <svg aria-hidden="true" class=" w-8 h-8 mr-2 animate-spin text-gray-200  dark:text-gray-600 fill-blue-600"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -91,7 +108,7 @@ async function deleteNotebook(notebookID: string) {
         </div>
 
         <hr />
-        <p class="font-semibold text-gray-900 dark:text-white">Your notebook:</p>
+        <p class="p-3 font-semibold ">Your notebooks:</p>
         <div class="m-5 grid grid-cols-4 gap-4 sm:grid-cols-2 lg:grid-cols-6">
             <div @click="createNewNotebook()"
                 class="flex justify-center max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-800 dark:hover:bg-gray-800">
@@ -103,12 +120,14 @@ async function deleteNotebook(notebookID: string) {
             </div>
             <div v-for="notebook in notebooks" :key="notebook.id">
                 <div
-                    class="flex flex-row max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <h5 class="mb-2 text-2xl w-5/6 font-bold tracking-tight text-gray-900 dark:text-white">
+                    class="flex flex-row max-w-sm bg-white border p-6 border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <h5 @click="currentNotebookID = notebook.id; $router.push('/home/' + notebook.id)"
+                        class="cursor-pointer mb-2 text-2xl w-5/6 font-bold tracking-tight ">
                         {{ notebook.title }}
                     </h5>
                     <div @click="deleteNotebook(notebook.id)"
-                        class="cursor-pointer w-1/6  rounded-lg flex justify-center items-center">🗑️
+                        class="hover:bg-slate-500 cursor-pointer w-1/6 rounded-lg flex justify-center items-center">
+                        🗑️
                     </div>
                 </div>
             </div>
