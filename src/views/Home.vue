@@ -33,57 +33,36 @@ async function createNewNotebook() {
   if (notebooks.value.length == 0) {
     index = 1;
   }
-  console.log(notebooks.value);
   loading.value = true;
-  await axios
-    .post(
-      import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks",
-      {
-        title: "New Notebook " + index++,
-      }
-    )
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  await axios.post(
+    import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks",
+    {
+      title: "New Notebook " + index++,
+    }
+  );
 
   await axios
     .get(import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks")
     .then(function (response) {
       notebooks.value = response.data["notebooks"];
-    })
-    .catch(function (error) {
-      console.log(error);
     });
   loading.value = false;
 }
 
 async function deleteNotebook(notebookID: string) {
   loading.value = true;
-  await axios
-    .delete(
-      import.meta.env.VITE_API_URL +
-        "users/" +
-        userId.value +
-        "/notebooks/" +
-        notebookID
-    )
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  await axios.delete(
+    import.meta.env.VITE_API_URL +
+      "users/" +
+      userId.value +
+      "/notebooks/" +
+      notebookID
+  );
 
   await axios
     .get(import.meta.env.VITE_API_URL + "users/" + userId.value + "/notebooks")
     .then(function (response) {
       notebooks.value = response.data["notebooks"];
-    })
-    .catch(function (error) {
-      console.log(error);
     });
   loading.value = false;
 }

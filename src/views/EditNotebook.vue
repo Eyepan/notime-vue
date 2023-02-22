@@ -38,22 +38,12 @@ onMounted(async function () {
     )
     .then(function (response) {
       notebook.value = response.data;
-      console.log(notebook.value);
     });
   loading.value = false;
   index = notebook.value.pages.length;
 });
 
 async function createPage() {
-  console.log(
-    "request url sent to " +
-      import.meta.env.VITE_API_URL +
-      "users/" +
-      userId.value +
-      "/notebooks/" +
-      currentNotebookID.value +
-      "/pages"
-  );
   loading.value = true;
   await axios
     .post(
@@ -80,7 +70,6 @@ async function createPage() {
         )
         .then(function (response) {
           notebook.value = response.data;
-          console.log(notebook.value);
         });
     });
   loading.value = false;
@@ -116,7 +105,6 @@ async function deletePage(id: string) {
             title: "",
           };
           currentPage.value.id = "";
-          console.log(notebook.value);
         });
     });
   loading.value = false;
@@ -124,10 +112,6 @@ async function deletePage(id: string) {
 
 async function updatePage() {
   loading.value = true;
-  console.log({
-    title: currentPage.value.title,
-    content: currentPage.value.content,
-  });
   await axios.put(
     import.meta.env.VITE_API_URL +
       "users/" +
