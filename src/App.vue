@@ -16,7 +16,7 @@ router.beforeEach((to, from) => {
 <template>
   <router-view v-slot="{ Component, route }">
     <!-- Use any custom transition and  to `fade` -->
-    <transition>
+    <transition name="slide-left">
       <component :is="Component" />
     </transition>
   </router-view>
