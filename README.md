@@ -1,40 +1,57 @@
-# notime-vue
+# Notime
+Note-taking application that mimics how you take notes in real life
 
-This template should help get you started developing with Vue 3 in Vite.
+Get organized with notebooks containing pages, which in turn contain content as you wish
 
-## Recommended IDE Setup
+Use Notime's Rich Text Editor to add styles to the content you add to your pages. 
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Built with ❤️ by [EyePan](https://github.com/Eyepan)
 
-## Type Support for `.vue` Imports in TS
+## Try it out
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+Notime is out [here](https://eyepan.github.io/notime-vue) if you want to try it out
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Build it yourself
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Requirements
+- The [backend](https://github.com/Eyepan/notime-flask-backend) repository
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+1. Clone the backend repository to it's own folder (preferably)
+```BASH
+mkdir backend 
+cd backend 
+https://github.com/Eyepan/notime-flask-backend 
 ```
 
-### Compile and Hot-Reload for Development
+2. Clone the front-end repository to it's own folder (preferably)
+```BASH
+cd ../    # to get to project root
+mkdir frontend
+cd frontend 
+git clone https://eyepan.github.io/notime-vue
+```
 
-```sh
+
+
+3. Install all NPM modules and setup environment files
+```BASH
+cd frontend/notime-vue
+npm i
+```
+Edit the `.env` file here
+```ENV
+VITE_API_URL='http://localhost:5000/api/'
+```
+
+4. Start the Flask server
+```BASH
+cd backend/notime-flask-backend
+python flask_app.py
+```
+
+5. Start the front-end vite project
+```
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+And enjoy!
