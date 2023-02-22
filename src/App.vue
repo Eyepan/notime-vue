@@ -14,5 +14,10 @@ router.beforeEach((to, from) => {
 </script>
 
 <template>
-  <RouterView />
+  <router-view v-slot="{ Component, route }">
+    <!-- Use any custom transition and  to `fade` -->
+    <transition>
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>

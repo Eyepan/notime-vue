@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: "/",
       component: SignInPage,
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: false, transition: "slide-left" },
     },
     {
       path: "/signup",
