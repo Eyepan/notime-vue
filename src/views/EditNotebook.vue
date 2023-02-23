@@ -19,6 +19,8 @@ const notebook = ref<Notebook>({
   title: "",
   pages: [],
 });
+
+const myEditor = ref();
 onMounted(async function () {
   loading.value = true;
   window.addEventListener("keydown", (e) => {
@@ -188,10 +190,7 @@ async function updateNotebookTitle() {
     <main
       class="overflow-hidden flex flex-row bg-gray-50 dark:bg-gray-900 w-screen h-screen px-3 py-4 text-gray-900 dark:text-white"
     >
-      <div
-        id="sidebar"
-        class="lg:w-1/6 md:w-1/4 h-full p-2 bg-slate-400 rounded-l-md"
-      >
+      <div id="sidebar" class="lg:w-1/6 md:w-1/4 h-full p-2 bg-slate-400 rounded-l-md">
         <svg
           @click="$router.go(-1)"
           class="fill-gray-900 dark:fill-white p-1 m-0 h-6 w-6 cursor-pointer rounded-full bg-zinc-600"
@@ -219,7 +218,10 @@ async function updateNotebookTitle() {
         <div v-for="page in notebook.pages" class="mt-2">
           <button
             class="h-7 bg-gray-50 overflow-hidden dark:bg-gray-800 w-[calc((100%_-_1rem)*0.8)] rounded-md"
-            @click="currentPage = page"
+            @click="
+              currentPage = page;
+              myEditor.setHTML(currentPage.content);
+            "
           >
             {{ page.title == "" ? "No title" : page.title }}
           </button>
@@ -269,6 +271,7 @@ async function updateNotebookTitle() {
           Page content:
           <div class="bg-white text-black">
             <QuillEditor
+              ref="myEditor"
               theme="snow"
               v-model:content="currentPage.content"
               contentType="html"
